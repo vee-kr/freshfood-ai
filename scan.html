@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Scan Food</title>
+
+    <link href="css/style.css" rel="stylesheet"/>
+    <script src="js/script.js" defer></script>
+
 </head>
 <body>
 <header>
@@ -11,6 +15,14 @@
 
 <main>
   <!-- The scanner with buttons -->
+    <p>
+        Point your camera at the food and take a photo to check its expiration date
+    </p>
+
+    <label for="food-photo">Take Photo</label>
+    <input id="food-photo" type="file" accept="image/*" capture="environment"/>
+
+    <img alt="Photo of the food" id="preview-food"/>
 </main>
 
 </body>
