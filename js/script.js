@@ -1,6 +1,6 @@
-  const scanResult = {
-            name: "Milk",
-            expirationDate: "2026-09-07"
+const scanResult = {
+            name: "Apple",
+            expirationDate: "2026-09-27"
         };
 
                                     /* Scan page */
@@ -59,12 +59,20 @@ const resultDate = document.getElementById("result-date");
 const resultStatus = document.getElementById("result-status");
 
 const savedScan = localStorage.getItem("scanResult");
-const food = JSON.parse(savedScan);
+const food = JSON.parse(savedScan);  // typeof = object
 
 
 if (resultProduct) {
     resultProduct.textContent = food.name;
-    resultDate.textContent = food.expirationDate;
+
+    const expirationDate = new Date(food.expirationDate);
+    const formatDate = expirationDate.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            });
+
+    resultDate.textContent = formatDate;
     resultStatus.textContent = getStatus(food.expirationDate);
 
 }
@@ -78,14 +86,16 @@ if (addFoodButton) {
         let foodList = [];
 
         if (savedFood) {
-            foodList = JSON.parse(savedFood);
-            console.log(foodList);
+            foodList = JSON.parse(savedFood);  // typeof = object
         }
 
 
+        food.id = Date.now()
         foodList.push(food);
 
-        localStorage.setItem("food", JSON.stringify(foodList));
+        localStorage.setItem("food", JSON.stringify(foodList));  // update "food" in localStorage with foodlist
+
+        alert(`${food.name} was added to My Food List!`);
     });
 }
 
@@ -97,7 +107,10 @@ if (addFoodButton) {
 
 const foodListContainer = document.getElementById("food-list-container");
 
+
 if (foodListContainer) {
+
+
     const savedFood = localStorage.getItem("food");
     if (savedFood) {
         const foodList = JSON.parse(savedFood);
@@ -114,13 +127,35 @@ if (foodListContainer) {
             });
 
 
+
             const status = getStatus(food.expirationDate);
 
             foodListContainer.innerHTML += `
         <h2>${food.name}</h2>
         <p>Expiration Date: ${formatDate}</p>
         <p>Status: ${status}</p>
+        <button class="remove-button" data-id="${food.id}">Remove</button>
         `;
         });
+
+
+        const removeButton = document.querySelectorAll(".remove-button");
+    removeButton.forEach((button) => {
+        button.addEventListener("click", () => {
+            const foodId = Number(button.dataset.id);
+
+            const foodIndex = foodList.findIndex((food) => food.id === foodId);
+            foodList.splice(foodIndex, 1);
+            localStorage.setItem("food", JSON.stringify(foodList));
+            location.reload();
+            });
+        });
+
     }
+
+    else {
+        foodListContainer.textContent = "Your food list is empty. Scan a product to add it!"
+
+    }
+    
 }
