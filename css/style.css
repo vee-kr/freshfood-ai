@@ -1,3 +1,39 @@
 #food-photo {
     display: none;
 }
+
+#food-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.food-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 15px;
+    border: 1px solid maroon;
+    padding: 20px;
+}
+.food-card h2{
+    margin-top: 0;
+}
+.food-card p{
+    margin: 15px 0;
+}
+.food-card button{
+    cursor: pointer;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 0.4s;
+}
+.food-card button:hover{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+}
+.remove-button {
+    margin-top: 10px;
+}

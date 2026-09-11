@@ -1,6 +1,6 @@
 const scanResult = {
-            name: "Apple",
-            expirationDate: "2026-09-27"
+            name: "Cheese",
+            expirationDate: "2026-09-05"
         };
 
                                     /* Scan page */
@@ -37,14 +37,15 @@ function getStatus(expirationDate) {
      const leftDays = Math.floor(difference / (3600 * 1000 * 24));
 
 
+
      if (today > expiration) {
-         return "Expired";
+         return "🔴 Expired";
      }
      else if (leftDays <= 3) {
-         return "Expiring soon!";
+         return "🟡 Expiring soon!";
      }
      else {
-         return "Fresh";
+         return "🟢 Fresh";
      }
 
   }
@@ -53,6 +54,7 @@ function getStatus(expirationDate) {
                                     /* Result page */
 
 const addFoodButton = document.getElementById("add-food");
+const readAloudButton = document.getElementById("read-aloud");
 
 const resultProduct = document.getElementById("result-product");
 const resultDate = document.getElementById("result-date");
@@ -99,6 +101,17 @@ if (addFoodButton) {
     });
 }
 
+if (readAloudButton) {
+    readAloudButton.addEventListener("click", () => {
+        const text = `${food.name}. Expiration date: ${resultDate.textContent}. Status: ${resultStatus.textContent}`;
+
+        const speech = new SpeechSynthesisUtterance(text);
+
+        speechSynthesis.cancel();
+        speechSynthesis.speak(speech);
+    });
+}
+
 
 
 
@@ -114,6 +127,11 @@ if (foodListContainer) {
     const savedFood = localStorage.getItem("food");
     if (savedFood) {
         const foodList = JSON.parse(savedFood);
+
+        foodList.sort((a, b) => {
+            return new Date(a.expirationDate) - new Date(b.expirationDate);
+        });
+
 
 
         foodList.forEach((food) => {
@@ -131,10 +149,12 @@ if (foodListContainer) {
             const status = getStatus(food.expirationDate);
 
             foodListContainer.innerHTML += `
-        <h2>${food.name}</h2>
-        <p>Expiration Date: ${formatDate}</p>
-        <p>Status: ${status}</p>
-        <button class="remove-button" data-id="${food.id}">Remove</button>
+        <div class="food-card">
+            <h2>${food.name}</h2>
+            <p>Expiration Date: ${formatDate}</p>
+            <p>Status: ${status}</p>
+            <button class="remove-button" data-id="${food.id}">Remove</button>
+        </div>
         `;
         });
 
