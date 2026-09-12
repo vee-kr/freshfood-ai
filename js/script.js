@@ -1,7 +1,3 @@
-const scanResult = {
-            name: "Cheese",
-            expirationDate: "2026-09-05"
-        };
 
                                     /* Scan page */
 
@@ -17,6 +13,7 @@ if (photoInput){
 
         if (file) {
             preview.src = URL.createObjectURL(file);
+            scanButton.disabled = false;
         }
     });
 }
@@ -24,10 +21,80 @@ if (photoInput){
 if (scanButton) {
 
     scanButton.addEventListener("click", () => {
+        const file = photoInput.files[0];
+        const fileName = file.name.split('.')[0];
+
+
+        const ocrText = `
+        MILK 3.2% 
+        1L
+        PACKED: 03.09.2026
+        USE BY: 15.11.2026
+        STORE AT +2°C
+        `;
+
+        const expirationDate = extractExpirationDate(ocrText);
+
+        if (!expirationDate) {
+            alert("Expiration date not found");
+            return;
+        }
+
+        const scanResult = createScanResult(fileName, expirationDate);
+
         localStorage.setItem("scanResult", JSON.stringify(scanResult));
         window.location.href = "result.html";
     });
 }
+
+
+function createScanResult(productName="Unknown product", expirationDate) {
+    return {
+        name: productName,
+        expirationDate: expirationDate
+    };
+}
+
+
+function extractExpirationDate(text) {
+    const dates = text.match(/\d{1,2}[/.]\d{1,2}[./]\d{2,4}/g);
+    const isoDate = text.match(/\d{4}-\d{2}-\d{2}/);
+
+    if (!dates && isoDate) {
+        return isoDate[0]
+    }
+
+    if (!dates) {
+        return null;
+    }
+
+    dates.forEach((date, index) => {
+        let [day, month, year] = date.split(/[./]/);
+        if (year.length === 2) {
+            year = `20${year}`;
+    }
+        dates[index] = `${day}.${month}.${year}`;
+    })
+
+
+    dates.sort((a, b) => {
+        return new Date(b.split(/[./]/).reverse().join("-")) - new Date(a.split(/[./]/).reverse().join("-"));
+    })
+
+    let [day, month, year] = dates[0].split(/[./]/);
+
+
+    const formatDate = `${year}-${month}-${day}`;
+    // const testDate = new Date(formatDate);
+    // if (isNaN(testDate)) {
+    //     return null
+    // }
+
+    return formatDate;
+}
+
+
+
 
 function getStatus(expirationDate) {
     const today = new Date();
