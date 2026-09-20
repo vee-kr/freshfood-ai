@@ -27,6 +27,8 @@ proxy_username = os.getenv("WEBSHARE_PROXY_USERNAME")
 proxy_password = os.getenv("WEBSHARE_PROXY_PASSWORD")
 
 
+# Configure the OpenRouter client with a proxy if proxy settings are available
+
 if all([proxy_address, proxy_port, proxy_username, proxy_password]):
 
     proxy = (
@@ -64,19 +66,26 @@ app.add_middleware(
 )
 
 
+# Scan a food package and return its name and expiration date
+
 @app.post("/scan")
 @app.post("/api/scan")
 async def scan_food(photo: UploadFile = File(...)):
     contents = await photo.read()
 
+    # Open the uploaded image and correct its orientation
+
     image = Image.open(io.BytesIO(contents))
     image = ImageOps.exif_transpose(image)
     image = image.convert("RGB")
+
+    # Convert the image to JPEG and then encode it as Base64
 
     buffer = io.BytesIO()
     image.save(buffer, format="JPEG")
     image_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
+    # Add AI instructions
 
     text_part: ChatCompletionContentPartTextParam = {
         "type": "text",
@@ -124,6 +133,8 @@ async def scan_food(photo: UploadFile = File(...)):
     """
     }
 
+    # Add the food photo to the AI
+
     image_part: ChatCompletionContentPartImageParam = {
         "type": "image_url",
         "image_url": {
@@ -131,11 +142,13 @@ async def scan_food(photo: UploadFile = File(...)):
         }
     }
 
+    # Combine the instructions and image into one user message
     message: ChatCompletionUserMessageParam = {
         "role": "user",
         "content": [text_part, image_part]
     }
 
+    # Send the message to the AI service
     try:
         response = client.chat.completions.create(
             model="nex-agi/nex-n2.5-pro:free", # Ling 3.0 Flash VL
@@ -148,6 +161,7 @@ async def scan_food(photo: UploadFile = File(...)):
             detail="Could not connect to the AI service."
         )
 
+    # Parse the AI response as JSON
 
     try:
         ai_result = response.choices[0].message.content.strip()
@@ -160,6 +174,7 @@ async def scan_food(photo: UploadFile = File(...)):
         )
     print(f"AI Result: {ai_result}")
 
+    # Return the extracted information
 
     return {
         "message": "Photo scanned!",
@@ -167,7 +182,9 @@ async def scan_food(photo: UploadFile = File(...)):
         "expirationDate": ai_result["expirationDate"]}
 
 
-# Frontend files
+                                                # Frontend files
+
+# Serve the CSS and the JavaScript files to the frontend
 
 app.mount(
     "/css",
@@ -181,6 +198,7 @@ app.mount(
     name="js"
 )
 
+# Serve the main frontend pages
 
 @app.get("/", include_in_schema=False)
 async def home():
