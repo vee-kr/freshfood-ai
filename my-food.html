@@ -6,9 +6,13 @@
 
     <link href="css/style.css" rel="stylesheet"/>
     <script src="js/script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
+    <img src="images/logo.png">
     <h1>My Food</h1>
     <nav>
         <a href="index.html">Home</a>
@@ -19,7 +23,7 @@
 
 <main>
     <!-- The scanned food list with expiration date -->
-    <div id="food-list-container"></div>
+    <div id="food-list-container" class="food-list"></div>
 
     <h2 id="manual-food-heading">Add Food Manually</h2>
     <form id="manual-food-form" aria-labelledby="manual-food-heading">
@@ -29,7 +33,7 @@
         <label for="manual-food-date">Expiration date:</label>
         <input type="date" id="manual-food-date" required>
 
-        <button type="submit">Add food</button>
+        <button type="submit" class="primary-button">Add food</button>
     </form>
 </main>
 

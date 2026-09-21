@@ -6,9 +6,13 @@
 
     <link href="css/style.css" rel="stylesheet"/>
     <script src="js/script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
+    <img src="images/logo.png">
   <h1>Scan Result</h1>
   <nav>
         <a href="index.html">Home</a>
@@ -20,7 +24,8 @@
 
 <main>
   <!-- Detected product, expiration date + 2 buttons (Add to My Food and Read aloud) -->
-    <section aria-labelledby="result-heading">
+<!--    <section aria-labelledby="result-heading">-->
+    <section class="result-card" aria-labelledby="result-heading">
     <h2 id="result-heading">Scan Result</h2>
 
     <h3> Product</h3>
@@ -30,11 +35,19 @@
     <p id="result-date"></p>
 
     <h3>Status</h3>
-    <p id="result-status"></p>
+<!--    <p id="result-status"></p>-->
+        <p id="result-status" class="status"></p>
     </section>
 
-    <button type="button" id="add-food">Add to My Food</button>
-    <button type="button" id="read-aloud">Read aloud</button>
+    <div class="result-actions">
+    <button type="button" id="add-food" class="primary-button">
+        Add to My Food
+    </button>
+
+    <button type="button" id="read-aloud" class="secondary-button">
+        Read aloud
+    </button>
+</div>
 
 </main>
 

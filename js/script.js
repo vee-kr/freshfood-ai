@@ -110,7 +110,7 @@ if (scanButton) {
 
                localStorage.setItem("partialScan", JSON.stringify(result));
                 scanMessage.textContent = ("Some information could not be found. Please take another photo.");
-                scanButton.textContent = "Scan";
+                scanButton.textContent = "Scan Food";
                 scanButton.disabled = true;
                 return;
             }
@@ -135,7 +135,7 @@ if (scanButton) {
             console.error("Scan error:", error);
             scanMessage.textContent = "Something went wrong. Please try again.";
             scanButton.disabled = false;
-            scanButton.textContent = "Scan";
+            scanButton.textContent = "Scan Food";
         }
         });
 
