@@ -198,6 +198,12 @@ app.mount(
     name="js"
 )
 
+app.mount(
+    "/images",
+    StaticFiles(directory=str(BASE_DIR / "images")),
+    name="images"
+)
+
 # Serve the main frontend pages
 
 @app.get("/", include_in_schema=False)
