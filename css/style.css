@@ -1,10 +1,27 @@
-#food-photo {
-    display: none;
+
+                                                /* Main */
+
+.hero, .scan-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 40px;
 }
 
-/*
-    MAIN
- */
+.hero p, .scan-instruction {
+  font-size: 1.5rem;
+  max-width: 90%;
+  margin: 0;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  align-items: center;
+}
 
 .fira-sans-medium {
   font-family: "Fira Sans", sans-serif;
@@ -29,18 +46,16 @@ body {
   line-height: 1.5;
 }
 
-/*
-  ACCESSIBILITY UTILITIES
-*/
+                                            /* Accessibility */
 
-/* 1. Keyboard Navigation Focus States */
+/* Keyboard Navigation Focus States */
 *:focus-visible {
   outline: 4px solid #2563EB;
   outline-offset: 4px;
   border-radius: 4px;
 }
 
-/* 2. Skip to Main Content Link */
+/* Skip to Main Content Link */
 .skip-link {
   position: absolute;
   top: -100%;
@@ -59,7 +74,7 @@ body {
   top: 0;
 }
 
-/* 3. Screen Reader Only Class */
+/* Screen Reader Only Class */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -72,9 +87,7 @@ body {
   border: 0;
 }
 
-/*
-  TYPO
-*/
+                                                  /* Headings */
 
 h1, h2, h3 {
   font-weight: 600;
@@ -84,13 +97,13 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
 }
 h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
 }
 h3 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 main {
@@ -102,9 +115,7 @@ main {
   gap: 30px;
 }
 
-/*
-  HEADER & NAVIGATION
-*/
+                                          /* Header & Navigation */
 
 header {
   display: flex;
@@ -115,8 +126,8 @@ header {
 }
 
 header img {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
 }
 
 header h1 {
@@ -141,7 +152,7 @@ nav a {
   color: #1F2937;
   font-weight: 500;
   text-decoration: none;
-  font-size: 1.125rem;
+  font-size: 1.35rem;
   min-height: 48px;
   padding: 10px 20px;
   display: flex;
@@ -155,13 +166,11 @@ nav a:hover, nav a:focus {
   background-color: #E5E7EB;
 }
 
-/*
-  BUTTONS
- */
+                                                  /* Buttons */
 
-.primary-button, .secondary-button {
+button, .primary-button, .secondary-button {
   font-family: inherit;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 500;
   /* Accessible Touch Target Size */
   min-height: 54px;
@@ -176,7 +185,7 @@ nav a:hover, nav a:focus {
   justify-content: center;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   width: 100%;
   max-width: 300px;
 }
@@ -209,9 +218,7 @@ nav a:hover, nav a:focus {
   transform: scale(0.98);
 }
 
-/*
-  FORMS
- */
+                                              /* Forms & Inputs */
 
 form {
   display: flex;
@@ -226,14 +233,14 @@ form {
 
 label {
   font-weight: 600;
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   color: #1F2937;
 }
 
 input {
   width: 100%;
   padding: 14px;
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   border: 2px solid #E5E7EB;
   border-radius: 8px;
   font-family: inherit;
@@ -248,3 +255,109 @@ input:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
+
+                                                  /* Food cards */
+
+#food-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.food-card, .result-card {
+  background-color: #FFFFFF;
+  width: 100%;
+  border-radius: 15px;
+  border: 1px solid #E5E7EB;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+.food-card p, .result-card p {
+  margin: 8px 0 20px 0;
+  font-size: 1.25rem;
+}
+
+.food-card p:last-of-type, .result-card p:last-of-type {
+  margin-bottom: 0;
+}
+
+.remove-button {
+  background-color: #FEE2E2;
+  color: #DC2626;
+  font-size: 1rem;
+  min-height: 44px;
+  margin-top: 15px;
+  width: auto;
+  padding: 10px 20px;
+  box-shadow: none;
+}
+
+.remove-button:hover, .remove-button:focus {
+  background-color: #FECACA;
+  transform: none;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+                                                /* Camera scan */
+
+#food-photo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.upload-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#preview-food {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
+}
+
+.scan-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#scan-message {
+  font-size: 1.5rem;
+  font-weight: 500;
+  min-height: 1.5em;
+}
+
+
+.scanning-pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+

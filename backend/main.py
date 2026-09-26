@@ -92,44 +92,71 @@ async def scan_food(photo: UploadFile = File(...)):
         "text": """
     Here is a photo of a food package.
 
-    Find the product name and expiration date.
+    Identify:
+    1. The product name.
+    2. The expiration date.
 
-    Rules:
-    - Dates use DD.MM.YYYY unless written as YYYY-MM-DD.
-    - Carefully inspect the ORIGINAL IMAGE before determining the expiration date.
-    - Expiration dates may use different formats, including:
-      - DD.MM.YYYY
-      - DD/MM/YYYY
-      - DD-MM-YYYY
-      - DD MM YYYY
-      - MM.DD.YYYY
-      - MM/DD/YYYY
-      - MM-DD-YYYY
-      - YYYY.MM.DD
-      - YYYY/MM/DD
-      - YYYY-MM-DD
-      
-    - The date may also contain spaces instead of separators.
-    - Determine the order of day, month, and year from the format and context on the package.
-    - For example:
-      - 13.10.2026 → 2026-10-13
-      - 13/10/2026 → 2026-10-13
-      - 13-10-2026 → 2026-10-13
-      - 13 10 2026 → 2026-10-13
-      - 10/13/2026 → 2026-10-13
-      - 2026-10-13 → 2026-10-13
-    - Do not invent or guess a date.
-    
-    - If a date could have more than one interpretation, use other information on the package to determine the format.
-    - Prefer the date labeled EXP, EXPIRY, BEST BEFORE, or an equivalent expiration label.
-    - Do not choose MFG, MANUFACTURED, or production dates.
-    
-    
-    - Return the result as JSON in exactly this format:
-        {{"name":"product name or NOT_FOUND","expirationDate":"YYYY-MM-DD or NOT_FOUND"}}
-    - If you cannot identify the product name, use "NOT_FOUND" for the name.
-    - If you cannot identify a clear expiration date, use "NOT_FOUND" for the expirationDate.
-        
+    Carefully inspect the entire ORIGINAL IMAGE.
+
+    PRODUCT NAME:
+    - Read the product name from visible text on the package.
+    - If the product name is not visible or cannot be identified, return "NOT_FOUND".
+    - Do not invent a product name.
+
+    EXPIRATION DATE:
+    - Prefer a date labeled EXP, EXPIRY, BEST BEFORE, USE BY, or another clear expiration label.
+    - Do NOT use a date labeled MFG, MANUFACTURED, PRODUCTION, or another clear production label.
+    - If multiple dates are visible and one is clearly labeled as the expiration date, use that date.
+    - If multiple dates are visible but there are no labels indicating which is the expiration date, use the LATER date as the expiration date.
+    - Never choose the earlier date over a later date unless the package explicitly identifies the earlier date as the expiration date.
+    - Only use dates that are actually visible in the image.
+    - If no usable date is visible, return "NOT_FOUND".
+
+    DATE FORMAT:
+    Dates may appear as:
+    - DD.MM.YYYY
+    - DD/MM/YYYY
+    - DD-MM-YYYY
+    - DD MM YYYY
+    - MM.DD.YYYY
+    - MM/DD/YYYY
+    - MM-DD-YYYY
+    - YYYY.MM.DD
+    - YYYY/MM/DD
+    - YYYY-MM-DD
+
+    Convert the expiration date to YYYY-MM-DD.
+
+    Examples:
+    - 13.10.2026 → 2026-10-13
+    - 13/10/2026 → 2026-10-13
+    - 13-10-2026 → 2026-10-13
+    - 13 10 2026 → 2026-10-13
+    - 10/13/2026 → 2026-10-13
+    - 2026-10-13 → 2026-10-13
+
+    IMPORTANT:
+    If the image contains:
+    17.07.2025
+    13.01.2026
+
+    and there are no labels identifying the dates, choose:
+    13.01.2026
+
+    and return:
+    2026-01-13
+
+    OUTPUT:
+    Return ONLY one valid JSON object.
+    Do not return Markdown.
+    Do not return ```json.
+    Do not return explanations.
+    Do not return reasoning.
+    Do not return any text before or after the JSON.
+
+    Use exactly this format:
+
+    {"name":"product name or NOT_FOUND","expirationDate":"YYYY-MM-DD or NOT_FOUND"}
     """
     }
 
@@ -148,12 +175,28 @@ async def scan_food(photo: UploadFile = File(...)):
         "content": [text_part, image_part]
     }
 
+    # AI models
+
+    PRIMARY_MODEL = "google/gemma-4-26b-a4b-it:free"
+
+    FALLBACK_MODELS = [
+        "google/gemma-4-31b-it:free",
+        "qwen/qwen3.8-27b:free",
+    ]
+
+
+
     # Send the message to the AI service
     try:
         response = client.chat.completions.create(
-            model="nex-agi/nex-n2.5-pro:free", # Ling 3.0 Flash VL
+            model=PRIMARY_MODEL,
+            extra_body={
+                "models": FALLBACK_MODELS
+            },
+            max_tokens=1000,
             messages=[message]
         )
+
     except Exception as error:
         print("OpenRouter error:", error)
         raise HTTPException(
@@ -161,12 +204,39 @@ async def scan_food(photo: UploadFile = File(...)):
             detail="Could not connect to the AI service."
         )
 
+
     # Parse the AI response as JSON
 
     try:
-        ai_result = response.choices[0].message.content.strip()
+        ai_result = response.choices[0].message.content or ""
+        ai_result = ai_result.strip()
+
+        print("RAW AI RESPONSE:", repr(ai_result))
+
+        if not ai_result:
+            raise ValueError("The AI returned an empty response.")
+
+        if ai_result.startswith("```"):
+            lines = ai_result.splitlines()
+
+            if lines and lines[0].strip().startswith("```"):
+                lines = lines[1:]
+
+            if lines and lines[-1].strip() == "```":
+                lines = lines[:-1]
+
+            ai_result = "\n".join(lines).strip()
+
+        start = ai_result.find("{")
+        end = ai_result.rfind("}")
+
+        if start == -1 or end == -1 or end < start:
+            raise ValueError("No JSON object found in the AI response.")
+
+        ai_result = ai_result[start:end + 1]
+
         ai_result = json.loads(ai_result)
-    except (AttributeError, json.JSONDecodeError, TypeError) as error:
+    except (AttributeError, json.JSONDecodeError, TypeError, ValueError) as error:
         print("AI response error:", error)
         raise HTTPException(
             status_code=502,
