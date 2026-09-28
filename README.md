@@ -25,7 +25,23 @@ FreshFood is designed with accessibility in mind, especially for blind and low-v
 
 ## 🛠️ Technologies
 
+- **Python** — Backend development and application logic
+- **HTML** — Page structure
+- **CSS** — Styling
+- **JavaScript** — Frontend functionality
+- **FastAPI** — Backend API and server
+- **OpenRouter** — AI model access for food recognition and expiration-date detection
+- **Vercel** — Deployment
+
 ## 📱 How It Works
+
+1. 📷 **Scan a product** — Upload or take a photo of a packaged food product.
+2. 🤖 **Process the image** — FreshFood sends the image to an AI vision model.
+3. 🔍 **Identify the information** — The AI identifies the product name and expiration date from the package.
+4. 📅 **Check the expiration status** — FreshFood determines whether the product is **Fresh**, **Expiring**, or **Expired**.
+5. 💾 **Add food to My Food** — Add scanned products to **My Food** or manually enter a product name and expiration date.
+6. 📋 **Manage your food** — View saved products and keep track of their expiration dates.
+7. 🔊 **Read the information aloud** — Important food information can be read aloud using text-to-speech.
 
 ## 🤖 AI
 
