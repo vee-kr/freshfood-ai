@@ -45,6 +45,19 @@ FreshFood is designed with accessibility in mind, especially for blind and low-v
 
 ## 🤖 AI
 
+The AI is instructed to:
+
+- 🔍 Identify the product name.
+- 📅 Find the expiration date on the package.
+- 🏷️ Prefer dates labeled **EXP**, **EXPIRY**, **BEST BEFORE**, or **USE BY**.
+- 🚫 Avoid using production or manufacturing dates as expiration dates.
+- 👀 Use only information that is visible in the photo.
+- 📄 Return the detected information in a structured format.
+
+If the product name or expiration date cannot be identified, the application can return `NOT_FOUND` instead of guessing.
+
+> ⚠️ AI results depend on the quality and visibility of the photo. FreshFood does not guarantee that every product or expiration date will be identified correctly.
+
 ## 📂 Project Structure
 
 ```text
@@ -75,7 +88,97 @@ freshfood-ai/
 
 ## 🚀 Getting Started
 
+
+### 1. Clone the repository
+
+Clone the repository and navigate to the project directory.
+
+    git clone https://github.com/vee-kr/freshfood-ai.git
+    cd freshfood-ai
+
+### 2. Create a virtual environment
+
+Create a Python virtual environment:
+
+    python -m venv venv
+
+Activate it:
+
+**macOS / Linux:**
+
+    source venv/bin/activate
+
+**Windows:**
+
+    venv\Scripts\activate
+
+### 3. Install dependencies
+
+Install the required Python packages:
+
+    pip install -r requirements.txt
+
+### 4. Set up environment variables
+
+Create a `.env` file in the project root.
+
+The only required environment variable is your OpenRouter API key:
+
+    OPENROUTER_API_KEY=your_api_key
+
+Replace `your_api_key` with your actual OpenRouter API key.
+
+### 5. Optional proxy configuration
+
+If OpenRouter is inaccessible from your network, you can optionally configure a Webshare proxy.
+
+Add the following variables to your `.env` file:
+
+    WEBSHARE_PROXY_ADDRESS=your_proxy_address
+    WEBSHARE_PROXY_PORT=your_proxy_port
+    WEBSHARE_PROXY_USERNAME=your_proxy_username
+    WEBSHARE_PROXY_PASSWORD=your_proxy_password
+
+> ‼️ A proxy is **not required** if OpenRouter is accessible from your network.
+
+### 6. Run the application
+
+Start the FastAPI server:
+
+    uvicorn app:app --reload
+
+Then open the local address provided by FastAPI in your browser.
+
+### 7. Start using FreshFood
+
+1. 📷 Take or choose a photo of a packaged food product.
+2. 🤖 Let the AI analyze the photo.
+3. 📅 Check the detected expiration date and food status.
+4. 💾 Add the product to **My Food** if you want to keep track of it.
+5. 🔊 Use **Read Aloud** to hear the food information.
+
 ## 🌐 Deployment
+
+FreshFood is deployed using **Vercel**.
+
+### Environment Variables
+
+When deploying the application to Vercel, add the following environment variable in the project's settings:
+
+    OPENROUTER_API_KEY=your_api_key_here
+
+If a proxy is required for your network, the optional Webshare proxy variables can also be added:
+
+    WEBSHARE_PROXY_ADDRESS=your_proxy_address
+    WEBSHARE_PROXY_PORT=your_proxy_port
+    WEBSHARE_PROXY_USERNAME=your_proxy_username
+    WEBSHARE_PROXY_PASSWORD=your_proxy_password
+
+### Live Demo
+
+FreshFood is available at:
+
+https://freshfood-ai.vercel.app/
 
 ## ⚠️ Limitations
 
