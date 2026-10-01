@@ -139,6 +139,7 @@ Add the following variables to your `.env` file:
     WEBSHARE_PROXY_USERNAME=your_proxy_username
     WEBSHARE_PROXY_PASSWORD=your_proxy_password
 
+
 > ‼️ A proxy is **not required** if OpenRouter is accessible from your network.
 
 ### 6. Run the application
@@ -182,7 +183,25 @@ https://freshfood-ai.vercel.app/
 
 ## ⚠️ Limitations
 
+### 🚨 Important: Free AI Model Availability
+
+> **FreshFood currently uses free AI models through OpenRouter. These models may become temporarily unavailable, overloaded, rate-limited, or removed from the platform. As a result, AI scanning may occasionally fail or require the models used by the application to be changed or updated.**
+
+- 🤖 **AI accuracy** — AI-generated results may be incorrect, especially when the product name or expiration date is unclear, blurry, partially hidden, or difficult to read.
+- 📷 **Photo quality** — The accuracy of the scan depends on the quality, lighting, angle, and visibility of the photo.
+- 📅 **Expiration dates** — FreshFood only uses dates that are visible in the provided image. If an expiration date cannot be identified, the result may be returned as `NOT_FOUND`.
+- 🌐 **Network access** — FreshFood requires access to OpenRouter to process food images. Some networks may require an optional proxy configuration.
+- 🔑 **API access** — An OpenRouter API key is required to use the AI scanning functionality.
+- 💾 **Local storage** — Saved food products are stored in the browser's local storage and may be lost if the browser data is cleared.
+- 📱 **Browser support** — Some accessibility and camera features may behave differently depending on the browser and device.
+
 ## 🔋 Future Improvements
+
+
+- 🤖 Improve AI accuracy and reliability for different types of food packaging and expiration date formats.
+- 🌍 Add support for more languages.
+- 💾 Add cloud-based food storage so saved products can be accessed across devices.
+- 🔔 Add optional notifications for products that are approaching their expiration dates.
 
 ## 📸 Screenshots
 
