@@ -1,4 +1,4 @@
-# FreshFood
+# 🍽️ FreshFood
 
 An accessible web application that helps blind and low-vision users identify packaged food and check its expiration date.
 
@@ -35,15 +35,17 @@ FreshFood is designed with accessibility in mind, especially for blind and low-v
 
 ## 📱 How It Works
 
-1. 📷 **Scan a product** — Upload or take a photo of a packaged food product.
-2. 🤖 **Process the image** — FreshFood sends the image to an AI vision model.
-3. 🔍 **Identify the information** — The AI identifies the product name and expiration date from the package.
-4. 📅 **Check the expiration status** — FreshFood determines whether the product is **Fresh**, **Expiring**, or **Expired**.
-5. 💾 **Add food to My Food** — Add scanned products to **My Food** or manually enter a product name and expiration date.
-6. 📋 **Manage your food** — View saved products and keep track of their expiration dates.
-7. 🔊 **Read the information aloud** — Important food information can be read aloud using text-to-speech.
+1. **Scan a product** — Upload or take a photo of a packaged food product.
+2. **Process the image** — FreshFood sends the image to an AI vision model.
+3. **Identify the information** — The AI identifies the product name and expiration date from the package.
+4. **Check the expiration status** — FreshFood determines whether the product is **Fresh**, **Expiring**, or **Expired**.
+5. **Add food to My Food** — Add scanned products to **My Food** or manually enter a product name and expiration date.
+6. **Manage your food** — View saved products and keep track of their expiration dates.
+7. **Read the information aloud** — Important food information can be read aloud using text-to-speech.
 
 ## 🤖 AI
+
+FreshFood uses AI vision models through **OpenRouter** to analyze photos of packaged food.
 
 The AI is instructed to:
 
@@ -71,7 +73,12 @@ freshfood-ai/
 │   └── style.css            # Styles
 │
 ├── images/
-│   └── logo.png             # FreshFood logo
+│   ├── logo.png                  # FreshFood logo
+│   ├── home-page.png             # Home page screenshot
+│   ├── scan-page.png             # Scan page screenshot
+│   ├── scan-page-scanning.png    # Scan page scanning screenshot
+│   ├── result-page.png           # Result page screenshot
+│   └── my-food.png               # My Food page screenshot
 │
 ├── js/
 │   └── script.js            # Frontend logic and application functionality
@@ -152,11 +159,11 @@ Then open the local address provided by FastAPI in your browser.
 
 ### 7. Start using FreshFood
 
-1. 📷 Take or choose a photo of a packaged food product.
-2. 🤖 Let the AI analyze the photo.
-3. 📅 Check the detected expiration date and food status.
-4. 💾 Add the product to **My Food** if you want to keep track of it.
-5. 🔊 Use **Read Aloud** to hear the food information.
+1. Take or choose a photo of a packaged food product.
+2. Let the AI analyze the photo.
+3. Check the detected expiration date and food status.
+4. Add the product to **My Food** if you want to keep track of it.
+5. Use **Read Aloud** to hear the food information.
 
 ## 🌐 Deployment
 
@@ -185,8 +192,7 @@ https://freshfood-ai.vercel.app/
 
 ### 🚨 Important: Free AI Model Availability
 
-> **FreshFood currently uses free AI models through OpenRouter. These models may become temporarily unavailable, overloaded, rate-limited, or removed from the platform. As a result, AI scanning may occasionally fail or require the models used by the application to be changed or updated.**
-
+> **FreshFood currently uses free AI models through OpenRouter. These models may become temporarily unavailable, overloaded, rate-limited, or removed from the platform. As a result, AI scanning may occasionally fail, and the models used by the application may need to be changed or updated.**
 - 🤖 **AI accuracy** — AI-generated results may be incorrect, especially when the product name or expiration date is unclear, blurry, partially hidden, or difficult to read.
 - 📷 **Photo quality** — The accuracy of the scan depends on the quality, lighting, angle, and visibility of the photo.
 - 📅 **Expiration dates** — FreshFood only uses dates that are visible in the provided image. If an expiration date cannot be identified, the result may be returned as `NOT_FOUND`.
@@ -204,6 +210,24 @@ https://freshfood-ai.vercel.app/
 - 🔔 Add optional notifications for products that are approaching their expiration dates.
 
 ## 📸 Screenshots
+
+### Home Page
+
+![FreshFood Home Page](images/home-page.png)
+
+### Scan Page
+
+![FreshFood Scan Page](images/scan-page.png)
+
+![FreshFood Scan Page - Scanning](images/scan-page-scanning.png)
+
+### Result Page
+
+![FreshFood Result Page](images/result-page.png)
+
+### My Food
+
+![FreshFood My Food Page](images/my-food.png)
 
 ## 👩🏼‍💻 Author
 
